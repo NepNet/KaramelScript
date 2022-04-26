@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace KaramelScript.Lexer
 {
@@ -106,9 +107,23 @@ namespace KaramelScript.Lexer
 				else if (IsStringStart(c))
 				{
 					//We don't care about the markers so we can set the start as index instead of index-1
+					
 					int start = index;
 					while (ReadNext(out c))
 					{
+						//Check if escape character to prevent an escaped string marker to end the scan
+						if (c == ESCAPE)
+						{
+							if (PeekNext(out c))
+							{
+								//Gotta check if the escape character appears again so it doesn't take the string marker in 
+								if (IsStringStart(c) || c == ESCAPE)
+								{
+									ReadNext(out _);
+								}
+							}
+							continue;
+						}
 						if (IsStringStart(c))
 						{
 							break;
@@ -118,6 +133,8 @@ namespace KaramelScript.Lexer
 					int end = index - 1;
 
 					string value = _code.Substring(start, end - start);
+
+					value = ProcessEscapedCharacters(value);
 					
 					tokens.Add(new Token(_file, line, start - lineStart, TokenType.Literal, value));
 				}
@@ -155,6 +172,33 @@ namespace KaramelScript.Lexer
 
 			c = '\0';
 			return false;
+		}
+
+		private string ProcessEscapedCharacters(string input)
+		{
+			var raw = new char[input.Length];
+			Console.WriteLine(input);
+			for (
+				int inIndex = 0, outIndex = 0; 
+				inIndex < input.Length;
+				inIndex++, outIndex++)
+			{
+				if (input[inIndex] == ESCAPE)
+				{
+					if (TryGetEscapedCharacter(input[inIndex + 1], out char escaped))
+					{
+						raw[outIndex] = escaped;
+						inIndex++;
+					}
+				}
+				else
+				{
+
+					raw[outIndex] = input[inIndex];
+				}
+			}
+			
+			return new string(raw);
 		}
 	}
 }
