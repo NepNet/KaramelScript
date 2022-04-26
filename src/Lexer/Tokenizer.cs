@@ -74,7 +74,7 @@ namespace KaramelScript.Lexer
 					int start = index - 1;
 					while (ReadNext(out c))
 					{
-						if (!Tokenizer.IsDigitChar(c))
+						if (!IsDigitChar(c))
 						{
 							index--;
 							break;
