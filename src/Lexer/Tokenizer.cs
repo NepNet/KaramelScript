@@ -7,6 +7,7 @@ namespace KaramelScript.Lexer
 	public partial class Tokenizer
 	{
 		private string _code;
+		private string _file;
 
 		public Tokenizer(string code)
 		{
@@ -29,11 +30,11 @@ namespace KaramelScript.Lexer
 					{
 						line++;
 						lineStart = index;
-						tokens.Add(new Token("code", line, index - lineStart, TokenType.NewLine, string.Empty));
+						tokens.Add(new Token(_file, line, index - lineStart, TokenType.NewLine, string.Empty));
 					}
 					//continue;
 				}
-				else if (Tokenizer.IsCommentStart(c))
+				else if (IsCommentStart(c))
 				{
 					int s = index - 1;
 					while (ReadNext(out c))
@@ -48,14 +49,14 @@ namespace KaramelScript.Lexer
 					
 					string value = _code.Substring(s, e - s);
 					
-					tokens.Add(new Token("code", line, s - lineStart, TokenType.Comment, value));
+					tokens.Add(new Token(_file, line, s - lineStart, TokenType.Comment, value));
 				}
-				else if(Tokenizer.IsLabelStart(c))
+				else if(IsLabelStart(c))
 				{
 					int start = index;
 					while (ReadNext(out c))
 					{
-						if (!Tokenizer.IsIdentifierChar(c))
+						if (!IsIdentifierChar(c))
 						{
 							index--;
 							break;
@@ -65,10 +66,10 @@ namespace KaramelScript.Lexer
 
 					string value = _code.Substring(start, end - start);
 					
-					tokens.Add(new Token("code", line, start - lineStart, TokenType.Label, value));
+					tokens.Add(new Token(_file, line, start - lineStart, TokenType.Label, value));
 				}
 				//Long bois
-				else if (Tokenizer.IsDigitChar(c))
+				else if (IsDigitChar(c))
 				{
 					int start = index - 1;
 					while (ReadNext(out c))
@@ -83,14 +84,14 @@ namespace KaramelScript.Lexer
 
 					string value = _code.Substring(start, end - start);
 					
-					tokens.Add(new Token("code", line, start - lineStart, TokenType.Literal, value));
+					tokens.Add(new Token(_file, line, start - lineStart, TokenType.Literal, value));
 				}
-				else if (Tokenizer.IsIdentifierChar(c))
+				else if (IsIdentifierChar(c))
 				{
 					int start = index - 1;
 					while (ReadNext(out c))
 					{
-						if (!Tokenizer.IsIdentifierChar(c))
+						if (!IsIdentifierChar(c))
 						{
 							index--;
 							break;
@@ -100,15 +101,15 @@ namespace KaramelScript.Lexer
 
 					string value = _code.Substring(start, end - start);
 					
-					tokens.Add(new Token("code", line, start - lineStart, TokenType.Identifier, value));
+					tokens.Add(new Token(_file, line, start - lineStart, TokenType.Identifier, value));
 				}
-				else if (Tokenizer.IsStringStart(c))
+				else if (IsStringStart(c))
 				{
 					//We don't care about the markers so we can set the start as index instead of index-1
 					int start = index;
 					while (ReadNext(out c))
 					{
-						if (Tokenizer.IsStringStart(c))
+						if (IsStringStart(c))
 						{
 							break;
 						}
@@ -118,7 +119,7 @@ namespace KaramelScript.Lexer
 
 					string value = _code.Substring(start, end - start);
 					
-					tokens.Add(new Token("code", line, start - lineStart, TokenType.Literal, value));
+					tokens.Add(new Token(_file, line, start - lineStart, TokenType.Literal, value));
 				}
 				else
 				{
