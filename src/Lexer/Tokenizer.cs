@@ -177,9 +177,9 @@ namespace KaramelScript.Lexer
 		private string ProcessEscapedCharacters(string input)
 		{
 			var raw = new char[input.Length];
-			Console.WriteLine(input);
+			int outIndex = 0;
 			for (
-				int inIndex = 0, outIndex = 0; 
+				int inIndex = 0; 
 				inIndex < input.Length;
 				inIndex++, outIndex++)
 			{
@@ -197,8 +197,10 @@ namespace KaramelScript.Lexer
 					raw[outIndex] = input[inIndex];
 				}
 			}
-			
-			return new string(raw);
+
+			Array.Resize(ref raw, outIndex);
+			var output = new string(raw);
+			return output;
 		}
 	}
 }
