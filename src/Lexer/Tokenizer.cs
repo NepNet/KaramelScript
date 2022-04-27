@@ -32,7 +32,7 @@ namespace KaramelScript.Lexer
 					{
 						line++;
 						lineStart = index;
-						tokens.Add(new Token(_file, line, index - lineStart, TokenType.NewLine, string.Empty));
+						//tokens.Add(new Token(_file, line, index - lineStart, TokenType.NewLine, string.Empty));
 					}
 				}
 				else if (char.IsWhiteSpace(c))
@@ -42,7 +42,7 @@ namespace KaramelScript.Lexer
 					{
 						line++;
 						lineStart = index;
-						tokens.Add(new Token(_file, line, index - lineStart, TokenType.NewLine, string.Empty));
+						//tokens.Add(new Token(_file, line, index - lineStart, TokenType.NewLine, string.Empty));
 					}
 					continue;
 				}
@@ -88,6 +88,10 @@ namespace KaramelScript.Lexer
 					{
 						if (!IsDigitChar(c))
 						{
+							if (IsIdentifierChar(c))
+							{
+								throw new Exception($"No whitespace between numeric literal and identifier at line {line} {index - lineStart}");
+							}
 							index--;
 							break;
 						}
