@@ -26,6 +26,7 @@ namespace KaramelScript.Lexer
 			{'\'', '\''},
 			{'"', '\"'},
 			{'\\', '\\'},
+			{'0', '\0'},
 		};
 
 		private bool TryGetEscapedCharacter(in char i, out char c) => _escapedCharacters.TryGetValue(i, out c);
