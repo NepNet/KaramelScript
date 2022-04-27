@@ -2,6 +2,7 @@ namespace KaramelScript
 {
 	public enum TokenType
 	{
+		StatementEnd,
 		NewLine,
 		Comment,
 		StringLiteral,

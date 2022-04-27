@@ -15,9 +15,17 @@ namespace KaramelScript
 
                 var tokens = tokenizer.Process();
 
-                foreach (var token in tokens)
+                var groups = Parser.Parser.GroupTokens(tokens);
+                int groupId = 0;
+                foreach (var group in groups)
                 {
-                    Console.WriteLine(token.ToString());
+                    Console.WriteLine($">>Group {groupId} -----------------------");
+                    foreach (var token in group)
+                    {
+                        Console.WriteLine(token);
+                    }
+                    Console.WriteLine($"<<Group {groupId} -----------------------");
+                    groupId++;
                 }
             }
             else

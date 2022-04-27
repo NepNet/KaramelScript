@@ -8,7 +8,7 @@ namespace KaramelScript.Lexer
 	public partial class Tokenizer
 	{
 		private string _code;
-		private string _file;
+		private string _file = "code";
 
 		public Tokenizer(string code)
 		{
@@ -22,25 +22,36 @@ namespace KaramelScript.Lexer
 			int lineStart = 0;
 			
 			List<Token> tokens = new List<Token>();
-			
+
 			while (ReadNext(out char c))
 			{
-				if (char.IsWhiteSpace(c))
+				if (IsStatementEnd(c))
 				{
-					if (c == '\n')
+					tokens.Add(new Token(_file, line, index - lineStart, TokenType.StatementEnd, string.Empty));
+					if (c == NEWLINE)
 					{
 						line++;
 						lineStart = index;
 						tokens.Add(new Token(_file, line, index - lineStart, TokenType.NewLine, string.Empty));
 					}
-					//continue;
+				}
+				else if (char.IsWhiteSpace(c))
+				{
+					//Won't be used probably while using newline to end a statement is a thing
+					if (c == NEWLINE)
+					{
+						line++;
+						lineStart = index;
+						tokens.Add(new Token(_file, line, index - lineStart, TokenType.NewLine, string.Empty));
+					}
+					continue;
 				}
 				else if (IsCommentStart(c))
 				{
 					int s = index - 1;
 					while (ReadNext(out c))
 					{
-						if (c == '\n')
+						if (c == NEWLINE)
 						{
 							index--;
 							break;
