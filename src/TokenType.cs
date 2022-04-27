@@ -4,7 +4,9 @@ namespace KaramelScript
 	{
 		NewLine,
 		Comment,
-		Literal,
+		StringLiteral,
+		NumericLiteral,
+		CharacterLiteral,
 		Identifier,
 		Label
 		

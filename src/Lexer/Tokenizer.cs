@@ -85,7 +85,7 @@ namespace KaramelScript.Lexer
 
 					string value = _code.Substring(start, end - start);
 					
-					tokens.Add(new Token(_file, line, start - lineStart, TokenType.Literal, value));
+					tokens.Add(new Token(_file, line, start - lineStart, TokenType.NumericLiteral, value));
 				}
 				else if (IsIdentifierChar(c))
 				{
@@ -136,7 +136,7 @@ namespace KaramelScript.Lexer
 
 					value = ProcessEscapedCharacters(value);
 					
-					tokens.Add(new Token(_file, line, start - lineStart, TokenType.Literal, value));
+					tokens.Add(new Token(_file, line, start - lineStart, TokenType.StringLiteral, value));
 				}
 				else
 				{
