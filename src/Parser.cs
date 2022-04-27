@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace KaramelScript.Parser
+namespace KaramelScript
 {
 	public static class Parser
 	{
