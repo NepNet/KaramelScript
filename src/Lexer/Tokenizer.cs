@@ -205,10 +205,13 @@ namespace KaramelScript.Lexer
 						raw[outIndex] = escaped;
 						inIndex++;
 					}
+					else
+					{
+						throw new Exception("Invalid escape sequence");
+					}
 				}
 				else
 				{
-
 					raw[outIndex] = input[inIndex];
 				}
 			}
