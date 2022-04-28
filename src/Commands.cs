@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 
 namespace KaramelScript
@@ -45,6 +46,13 @@ namespace KaramelScript
 				return _instrctions.Contains(token.Value) || _branches.Contains(token.Value);
 			}
 			return false;
+		}
+		
+		private static Dictionary<string, Instruction> instructions = new Dictionary<string, Instruction>();
+
+		public static void RegisterInstruction(Instruction instruction)
+		{
+			instructions.Add(instruction.Name, instruction);
 		}
 	}
 }

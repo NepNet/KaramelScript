@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using KaramelScript.AST;
 
 namespace KaramelScript
 {
@@ -23,6 +25,11 @@ namespace KaramelScript
 			}
 
 			return groups;
+		}
+
+		public static Node GetAST(IEnumerable<Token> tokens)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }
