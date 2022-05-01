@@ -15,20 +15,6 @@ namespace KaramelScript
 				var tokenizer = new Tokenizer(File.ReadAllText(path));
 
 				var tokens = tokenizer.Process();
-
-				/*var groups = Parser.GroupTokens(tokens);
-				int groupId = 0;
-				foreach (var group in groups)
-				{
-				Console.WriteLine($">>Group {groupId} -----------------------");
-				foreach (var token in group)
-				{
-				Console.WriteLine(token);
-				}
-				Console.WriteLine($"<<Group {groupId} -----------------------");
-				groupId++;
-				}*/
-
 				
 				var program = new ProgramExpression(null);
 				var module = new ModuleExpression(program, "name");
@@ -45,8 +31,10 @@ namespace KaramelScript
 					}
 				}
 				
-				RecursivePrint(program, 0);
+			//	RecursivePrint(program, 0);
 				
+				Runner runner = new Runner(program);
+				runner.Run();
 			}
 			else
 			{
