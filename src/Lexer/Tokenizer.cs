@@ -81,7 +81,7 @@ namespace KaramelScript.Lexer
 					tokens.Add(new Token(_file, line, start - lineStart, TokenType.Label, value));
 				}
 				//Long bois
-				else if (IsDigitChar(c) || c == '-' || c == '+')
+				else if (IsDigitChar(c) || c is '-' or '+')
 				{
 					int start = index - 1;
 					while (ReadNext(out c))

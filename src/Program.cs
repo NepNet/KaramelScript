@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using KaramelScript.Lexer;
 using KaramelScript.Parser;
@@ -20,7 +21,7 @@ namespace KaramelScript
 				var module = new ModuleExpression(program, "name");
 				
 				new AstBuilder().BuildAST(module, tokens, "a");
-
+				
 				void RecursivePrint(Expression thing, int depth)
 				{
 					Console.WriteLine($"{depth.ToString().PadRight(depth, '\t')} {thing}");

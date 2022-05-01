@@ -61,25 +61,27 @@ namespace KaramelScript
 			_commands[name].Invoke(context);
 		}
 
+		private static void ThrowIfArgumentCountMismatch(string name, int expected, int received)
+		{
+			if (received != expected)
+			{
+				throw new ArgumentCountException(name, 1, received);
+			}
+		}
+		
 		[DisplayName("new")]
 		public static void New(Runner.RunnerContext context)
 		{
-			var args = context.Current.Children.ToArray();
-			if (args.Length != 2)
-			{
-				throw new ArgumentCountException("new", 2, args.Length);
-			}
+			var args = context.Current.Children;
+			ThrowIfArgumentCountMismatch("new", 2, args.Count);
 
 			context.Variables.Add(args[0].Value, null);
 		}
 		[DisplayName("set")]
 		public static void Set(Runner.RunnerContext context)
 		{
-			var args = context.Current.Children.ToArray();
-			if (args.Length != 2)
-			{
-				throw new ArgumentCountException("set", 2, args.Length);
-			}
+			var args = context.Current.Children;
+			ThrowIfArgumentCountMismatch("set", 2, args.Count);
 
 			if (args[0] is ReferenceExpression target)
 			{
@@ -128,11 +130,8 @@ namespace KaramelScript
 		[DisplayName("cpy")]
 		public static void Cpy(Runner.RunnerContext context)
 		{
-			var args = context.Current.Children.ToArray();
-			if (args.Length != 2)
-			{
-				throw new ArgumentCountException("cpy", 2, args.Length);
-			}
+			var args = context.Current.Children;
+			ThrowIfArgumentCountMismatch("cpy", 2, args.Count);
 
 			if (args[0] is ReferenceExpression target && args[1] is ReferenceExpression source)
 			{
@@ -146,11 +145,8 @@ namespace KaramelScript
 		[DisplayName("add")]
 		public static void Add(Runner.RunnerContext context)
 		{
-			var args = context.Current.Children.ToArray();
-			if (args.Length != 2)
-			{
-				throw new ArgumentCountException("add", 2, args.Length);
-			}
+			var args = context.Current.Children;
+			ThrowIfArgumentCountMismatch("add", 2, args.Count);
 
 			if (args[0] is ReferenceExpression target)
 			{
@@ -174,11 +170,8 @@ namespace KaramelScript
 		[DisplayName("sub")]
 		public static void Sub(Runner.RunnerContext context)
 		{
-			var args = context.Current.Children.ToArray();
-			if (args.Length != 2)
-			{
-				throw new ArgumentCountException("sub", 2, args.Length);
-			}
+			var args = context.Current.Children;
+			ThrowIfArgumentCountMismatch("sub", 2, args.Count);
 
 			if (args[0] is ReferenceExpression target)
 			{
@@ -202,11 +195,8 @@ namespace KaramelScript
 		[DisplayName("mul")]
 		public static void Mul(Runner.RunnerContext context)
 		{
-			var args = context.Current.Children.ToArray();
-			if (args.Length != 2)
-			{
-				throw new ArgumentCountException("mul", 2, args.Length);
-			}
+			var args = context.Current.Children;
+			ThrowIfArgumentCountMismatch("mul", 2, args.Count);
 
 			if (args[0] is ReferenceExpression target)
 			{
@@ -229,11 +219,8 @@ namespace KaramelScript
 		[DisplayName("div")]
 		public static void Div(Runner.RunnerContext context)
 		{
-			var args = context.Current.Children.ToArray();
-			if (args.Length != 2)
-			{
-				throw new ArgumentCountException("div", 2, args.Length);
-			}
+			var args = context.Current.Children;
+			ThrowIfArgumentCountMismatch("div", 2, args.Count);
 
 			if (args[0] is ReferenceExpression target)
 			{
@@ -256,12 +243,9 @@ namespace KaramelScript
 		[DisplayName("mod")]
 		public static void Mod(Runner.RunnerContext context)
 		{
-			var args = context.Current.Children.ToArray();
-			if (args.Length != 2)
-			{
-				throw new ArgumentCountException("mod", 2, args.Length);
-			}
-
+			var args = context.Current.Children;
+			ThrowIfArgumentCountMismatch("mod", 2, args.Count);
+			
 			if (args[0] is ReferenceExpression target)
 			{
 				if (args[1] is ReferenceExpression source)
@@ -280,16 +264,12 @@ namespace KaramelScript
 				}
 			}
 		}
-		
 		[DisplayName("flp")]
 		public static void Flp(Runner.RunnerContext context)
 		{
-			var args = context.Current.Children.ToArray();
-			if (args.Length != 1)
-			{
-				throw new ArgumentCountException("flp", 1, args.Length);
-			}
-
+			var args = context.Current.Children;
+			ThrowIfArgumentCountMismatch("flp", 1, args.Count);
+			
 			if (args[0] is ReferenceExpression target)
 			{
 				int value1 = int.Parse(context.Variables[target.Value].ToString());
@@ -297,5 +277,17 @@ namespace KaramelScript
 				context.Variables[target.Value] = value1 * -1;
 			}
 		}
+		[DisplayName("jmp")]
+		public static void Jmp(Runner.RunnerContext context)
+		{
+			var args = context.Current.Children;
+			ThrowIfArgumentCountMismatch("jmp", 1, args.Count);
+
+			if (args[0] is ReferenceExpression target)
+			{
+				context.JumpTo(target.Value);
+			}
+		}
+		
 	}
 }

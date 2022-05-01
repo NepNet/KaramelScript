@@ -6,7 +6,7 @@ namespace KaramelScript.Parser
 	{
 		public abstract string Value { get; }
 		public Expression Parent { get; }
-		public IEnumerable<Expression> Children => _children;
+		public IReadOnlyList<Expression> Children => _children;
 		private List<Expression> _children = new List<Expression>();
 
 		private void AddChild(Expression expression)

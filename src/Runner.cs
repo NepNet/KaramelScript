@@ -17,12 +17,14 @@ namespace KaramelScript
 				Runner = runner;
 			}
 
-			public Dictionary<string, object> Variables => Runner.variables;
+			public Dictionary<string, object> Variables => Runner._variables;
+			public void JumpTo(string label) => Runner.index = Runner._labels[label];
 		}
 		
 		private ProgramExpression _program;
 		
-		private Dictionary<string, object> variables = new Dictionary<string, object>();
+		private readonly Dictionary<string, object> _variables = new Dictionary<string, object>();
+		private readonly Dictionary<string, int> _labels = new Dictionary<string, int>();
 		
 		public Runner(ProgramExpression program)
 		{
@@ -30,27 +32,35 @@ namespace KaramelScript
 		}
 
 		internal Expression Current;
-		
+
+		private int index;
 		public void Run()
 		{
+			index = 0;
+			
 			var modules = _program.Children.ToArray();
 			if (modules.Length != 1)
 			{
 				throw new Exception("Unexpected number or modules received");
 			}
 			
-			var statements = modules[0].Children;
+			var statements = modules[0].Children.ToArray();
 
 			var context = new RunnerContext(this);
 			
-			foreach (var statement in statements)
+			while (index < statements.Length)
 			{
-				Current = statement;
-				if (statement is CallExpression call)
+				Current = statements[index];
+				if (Current is CallExpression call)
 				{
 					Commands.RunCommand(call.Value, context);
 				}
-				
+				else if (Current is LabelDefinitionExpression label)
+				{
+					_labels.Add(label.Value, index);
+				}
+
+				index++;
 			}
 		}
 	}
