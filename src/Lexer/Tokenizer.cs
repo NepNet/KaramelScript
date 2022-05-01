@@ -61,7 +61,7 @@ namespace KaramelScript.Lexer
 					
 					string value = _code.Substring(s, e - s);
 					
-					tokens.Add(new Token(_file, line, s - lineStart, TokenType.Comment, value));
+					//tokens.Add(new Token(_file, line, s - lineStart, TokenType.Comment, value));
 				}
 				else if(IsLabelStart(c))
 				{
