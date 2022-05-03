@@ -17,13 +17,24 @@ namespace KaramelScript
 				Runner = runner;
 			}
 
-			public Dictionary<string, object> Variables => Runner._variables;
+			public Dictionary<string, Variable> Variables => Runner._variables;
 			public void JumpTo(string label) => Runner.index = Runner._labels[label];
+			public void Skip() => Runner.index++;
+
+			public void CopyVariable(Variable target, Variable source)
+			{
+				if (target.Type != source.Type)
+				{
+					throw new ArgumentException($"Type mismatch between the variables");
+				}
+
+				target.RawValue = source.RawValue;
+			}
 		}
 		
 		private ProgramExpression _program;
 		
-		private readonly Dictionary<string, object> _variables = new Dictionary<string, object>();
+		private readonly Dictionary<string, Variable> _variables = new Dictionary<string, Variable>();
 		private readonly Dictionary<string, int> _labels = new Dictionary<string, int>();
 		
 		public Runner(ProgramExpression program)
