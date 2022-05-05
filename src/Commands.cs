@@ -75,7 +75,7 @@ namespace KaramelScript
 			var args = context.Current.Children;
 			ThrowIfArgumentCountMismatch("new", 2, args.Count);
 
-			var variable = new Variable(args[0].Value, args[1].Value);
+			var variable = new Variable(args[0].RawValue, args[1].RawValue);
 			context.Variables.Add(variable.Name, variable);
 		}
 		[DisplayName("set")]
@@ -90,22 +90,22 @@ namespace KaramelScript
 				{
 					case ReferenceExpression reference:
 					{
-						var targetVar = context.Variables[target.Value];
-						var sourceVar = context.Variables[reference.Value];
+						var targetVar = context.Variables[target.RawValue];
+						var sourceVar = context.Variables[reference.RawValue];
 						context.CopyVariable(targetVar, sourceVar);
 					}
 						break;
 					case LiteralExpression literal:
 					{
-						var targetVar = context.Variables[target.Value];
+						var targetVar = context.Variables[target.RawValue];
 						
 						if (literal.Type == "int")
 						{
-							targetVar.RawValue = int.Parse(literal.Value);
+							targetVar.RawValue = int.Parse(literal.RawValue);
 						}
 						else
 						{
-							targetVar.RawValue = literal.Value;
+							targetVar.RawValue = literal.RawValue;
 						}
 					}
 						break;
@@ -121,8 +121,8 @@ namespace KaramelScript
 			{
 				var @out = arg switch
 				{
-					ReferenceExpression reference => context.Variables[reference.Value].RawValue,
-					LiteralExpression value => value.Value,
+					ReferenceExpression reference => context.Variables[reference.RawValue].RawValue,
+					LiteralExpression value => value.RawValue,
 					_ => ""
 				};
 				
@@ -138,8 +138,8 @@ namespace KaramelScript
 			{
 				var @out = arg switch
 				{
-					ReferenceExpression reference => context.Variables[reference.Value].RawValue,
-					LiteralExpression value => value.Value,
+					ReferenceExpression reference => context.Variables[reference.RawValue].RawValue,
+					LiteralExpression value => value.RawValue,
 					_ => ""
 				};
 				
@@ -154,7 +154,7 @@ namespace KaramelScript
 
 			if (args[0] is ReferenceExpression target && args[1] is ReferenceExpression source)
 			{
-				context.Variables[target.Value] = context.Variables[source.Value];
+				context.Variables[target.RawValue] = context.Variables[source.RawValue];
 			}
 			else
 			{
@@ -171,17 +171,17 @@ namespace KaramelScript
 			{
 				if (args[1] is ReferenceExpression source)
 				{
-					var value1 = context.Variables[target.Value].GetValue<int>();
-					var value2 = context.Variables[source.Value].GetValue<int>();
+					var value1 = context.Variables[target.RawValue].GetValue<int>();
+					var value2 = context.Variables[source.RawValue].GetValue<int>();
 					
-					context.Variables[target.Value].RawValue = value1 + value2;
+					context.Variables[target.RawValue].RawValue = value1 + value2;
 				}
 				else if (args[1] is LiteralExpression value)
 				{
-					int value2 = int.Parse(value.Value);
-					int value1 = context.Variables[target.Value].GetValue<int>();
+					int value2 = int.Parse(value.RawValue);
+					int value1 = context.Variables[target.RawValue].GetValue<int>();
 
-					context.Variables[target.Value].RawValue = value1 + value2;
+					context.Variables[target.RawValue].RawValue = value1 + value2;
 				}
 			}
 			
@@ -196,17 +196,17 @@ namespace KaramelScript
 			{
 				if (args[1] is ReferenceExpression source)
 				{
-					var value1 = context.Variables[target.Value].GetValue<int>();
-					var value2 = context.Variables[source.Value].GetValue<int>();
+					var value1 = context.Variables[target.RawValue].GetValue<int>();
+					var value2 = context.Variables[source.RawValue].GetValue<int>();
 					
-					context.Variables[target.Value].RawValue = value1 - value2;
+					context.Variables[target.RawValue].RawValue = value1 - value2;
 				}
 				else if (args[1] is LiteralExpression value)
 				{
-					int value2 = int.Parse(value.Value);
-					int value1 = context.Variables[target.Value].GetValue<int>();
+					int value2 = int.Parse(value.RawValue);
+					int value1 = context.Variables[target.RawValue].GetValue<int>();
 
-					context.Variables[target.Value].RawValue = value1 - value2;
+					context.Variables[target.RawValue].RawValue = value1 - value2;
 				}
 			}
 			
@@ -221,17 +221,17 @@ namespace KaramelScript
 			{
 				if (args[1] is ReferenceExpression source)
 				{
-					var value1 = context.Variables[target.Value].GetValue<int>();
-					var value2 = context.Variables[source.Value].GetValue<int>();
+					var value1 = context.Variables[target.RawValue].GetValue<int>();
+					var value2 = context.Variables[source.RawValue].GetValue<int>();
 					
-					context.Variables[target.Value].RawValue = value1 * value2;
+					context.Variables[target.RawValue].RawValue = value1 * value2;
 				}
 				else if (args[1] is LiteralExpression value)
 				{
-					int value2 = int.Parse(value.Value);
-					int value1 = context.Variables[target.Value].GetValue<int>();
+					int value2 = int.Parse(value.RawValue);
+					int value1 = context.Variables[target.RawValue].GetValue<int>();
 
-					context.Variables[target.Value].RawValue = value1 * value2;
+					context.Variables[target.RawValue].RawValue = value1 * value2;
 				}
 			}
 		}
@@ -245,17 +245,17 @@ namespace KaramelScript
 			{
 				if (args[1] is ReferenceExpression source)
 				{
-					var value1 = context.Variables[target.Value].GetValue<int>();
-					var value2 = context.Variables[source.Value].GetValue<int>();
+					var value1 = context.Variables[target.RawValue].GetValue<int>();
+					var value2 = context.Variables[source.RawValue].GetValue<int>();
 					
-					context.Variables[target.Value].RawValue = value1 / value2;
+					context.Variables[target.RawValue].RawValue = value1 / value2;
 				}
 				else if (args[1] is LiteralExpression value)
 				{
-					int value2 = int.Parse(value.Value);
-					int value1 = context.Variables[target.Value].GetValue<int>();
+					int value2 = int.Parse(value.RawValue);
+					int value1 = context.Variables[target.RawValue].GetValue<int>();
 
-					context.Variables[target.Value].RawValue = value1 / value2;
+					context.Variables[target.RawValue].RawValue = value1 / value2;
 				}
 			}
 		}
@@ -269,17 +269,17 @@ namespace KaramelScript
 			{
 				if (args[1] is ReferenceExpression source)
 				{
-					var value1 = context.Variables[target.Value].GetValue<int>();
-					var value2 = context.Variables[source.Value].GetValue<int>();
+					var value1 = context.Variables[target.RawValue].GetValue<int>();
+					var value2 = context.Variables[source.RawValue].GetValue<int>();
 					
-					context.Variables[target.Value].RawValue = value1 % value2;
+					context.Variables[target.RawValue].RawValue = value1 % value2;
 				}
 				else if (args[1] is LiteralExpression value)
 				{
-					int value2 = int.Parse(value.Value);
-					int value1 = context.Variables[target.Value].GetValue<int>();
+					int value2 = int.Parse(value.RawValue);
+					int value1 = context.Variables[target.RawValue].GetValue<int>();
 
-					context.Variables[target.Value].RawValue = value1 % value2;
+					context.Variables[target.RawValue].RawValue = value1 % value2;
 				}
 			}
 		}
@@ -291,9 +291,9 @@ namespace KaramelScript
 			
 			if (args[0] is ReferenceExpression target)
 			{
-				int value1 = int.Parse(context.Variables[target.Value].ToString());
+				int value1 = int.Parse(context.Variables[target.RawValue].ToString());
 
-				context.Variables[target.Value].RawValue = value1 * -1;
+				context.Variables[target.RawValue].RawValue = value1 * -1;
 			}
 		}
 		[DisplayName("jmp")]
@@ -304,7 +304,7 @@ namespace KaramelScript
 
 			if (args[0] is ReferenceExpression target)
 			{
-				context.JumpTo(target.Value);
+				context.JumpTo(target.RawValue);
 			}
 		}
 		
