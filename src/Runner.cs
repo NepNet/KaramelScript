@@ -15,7 +15,15 @@ namespace KaramelScript
 				Runner = runner;
 			}
 
-			public Dictionary<string, Variable> Variables => Runner._variables;
+			public Variable GetVariable(string name) => Runner._variables[name];
+
+			public Variable CreateVariable(string name, string type)
+			{
+				var var = new Variable(name, type);
+				Runner._variables.Add(name, var);
+				return var;
+			}
+			
 			public void JumpTo(string label) => Runner.index = Runner._labels[label];
 			public void Skip() => Runner.index++;
 
