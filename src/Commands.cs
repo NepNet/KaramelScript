@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using KaramelScript.Exceptions;
 using KaramelScript.Parser;
 
@@ -13,7 +14,6 @@ namespace KaramelScript
 		//Instructions left to implement
 		private static string[] _instructions = new string[]
 		{
-			"flp",
 			"len",
 			"tof",
 			"put",
@@ -21,14 +21,8 @@ namespace KaramelScript
 			"get",
 			
 			//Branches group
-			"siz",
-			"siz!",
-			"sin",
-			"sin!",
-			"jmp",
 			"jmp!",
 			"end",
-			"end!"
 		};
 
 		static Commands()
@@ -113,7 +107,7 @@ namespace KaramelScript
 		[DisplayName("out")]
 		public static void Out(Runner.RunnerContext context)
 		{
-			var args = context.Current.Children.ToArray();
+			var args = context.Current.Children;
 						
 			foreach (var arg in args)
 			{
@@ -130,7 +124,7 @@ namespace KaramelScript
 		[DisplayName("out!")]
 		public static void OutEndLine(Runner.RunnerContext context)
 		{
-			var args = context.Current.Children.ToArray();
+			var args = context.Current.Children;
 						
 			foreach (var arg in args)
 			{
@@ -182,7 +176,6 @@ namespace KaramelScript
 					context.GetVariable(target.RawValue).RawValue = value1 + value2;
 				}
 			}
-			
 		}
 		[DisplayName("sub")]
 		public static void Sub(Runner.RunnerContext context)
@@ -305,6 +298,96 @@ namespace KaramelScript
 				context.JumpTo(target.RawValue);
 			}
 		}
-		
+		[DisplayName("siz")]
+		public static void Siz(Runner.RunnerContext context)
+		{
+			var args = context.Current.Children;
+			ThrowIfArgumentCountMismatch("siz", 1, args.Count);
+
+			if (args[0] is ReferenceExpression target)
+			{
+				var value = int.Parse(context.GetVariable(target.RawValue).RawValue.ToString());
+				if (value == 0)
+				{
+					context.Skip();
+				}
+			}
+		}
+		[DisplayName("siz!")]
+		public static void SizNegative(Runner.RunnerContext context)
+		{
+			var args = context.Current.Children;
+			ThrowIfArgumentCountMismatch("siz", 1, args.Count);
+
+			if (args[0] is ReferenceExpression target)
+			{
+				var value = int.Parse(context.GetVariable(target.RawValue).RawValue.ToString());
+				if (value != 0)
+				{
+					context.Skip();
+				}
+			}
+		}
+		[DisplayName("sin")]
+		public static void Sin(Runner.RunnerContext context)
+		{
+			var args = context.Current.Children;
+			ThrowIfArgumentCountMismatch("sin", 1, args.Count);
+
+			if (args[0] is ReferenceExpression target)
+			{
+				var value = int.Parse(context.GetVariable(target.RawValue).RawValue.ToString());
+				if (value < 0)
+				{
+					context.Skip();
+				}
+			}
+		}
+		[DisplayName("sin!")]
+		public static void Sip(Runner.RunnerContext context)
+		{
+			var args = context.Current.Children;
+			ThrowIfArgumentCountMismatch("sin!", 1, args.Count);
+
+			if (args[0] is ReferenceExpression target)
+			{
+				var value = int.Parse(context.GetVariable(target.RawValue).RawValue.ToString());
+				if (value > 0)
+				{
+					context.Skip();
+				}
+			}
+		}
+		[DisplayName("end!")]
+		public static void ENDNOW(Runner.RunnerContext context)
+		{
+			var args = context.Current.Children;
+			ThrowIfArgumentCountMismatch("end!", 0, args.Count);
+
+			Environment.Exit(0);
+		}
+		[DisplayName("put")]
+		public static void Put(Runner.RunnerContext context)
+		{
+			var args = context.Current.Children;
+			
+			StringBuilder builder = new StringBuilder();
+			
+			foreach (var arg in args)
+			{
+				string @out = arg switch
+				{
+					ReferenceExpression reference => context.GetVariable(reference.RawValue).RawValue.ToString(),
+					LiteralExpression value => value.RawValue.ToString(),
+					_ => ""
+				};
+				builder.Append(@out);
+			}
+
+			if (args[0] is ReferenceExpression target)
+			{
+				context.GetVariable(target.RawValue).RawValue = builder.ToString();
+			}
+		}
 	}
 }
