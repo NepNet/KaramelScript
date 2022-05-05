@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using KaramelScript.Exceptions;
 using KaramelScript.Parser;
 
 namespace KaramelScript
@@ -38,26 +36,26 @@ namespace KaramelScript
 		{
 			index = 0;
 			
-			var modules = _program.Children.ToArray();
-			if (modules.Length != 1)
+			var modules = _program.Children;
+			if (modules.Count != 1)
 			{
 				throw new Exception("Unexpected number or modules received");
 			}
 			
-			var statements = modules[0].Children.ToArray();
+			var statements = modules[0].Children;
 
 			var context = new RunnerContext(this);
 			
-			while (index < statements.Length)
+			while (index < statements.Count)
 			{
 				Current = statements[index];
 				if (Current is CallExpression call)
 				{
-					Commands.RunCommand(call.Value, context);
+					Commands.RunCommand(call.RawValue, context);
 				}
 				else if (Current is LabelDefinitionExpression label)
 				{
-					_labels.Add(label.Value, index);
+					_labels.Add(label.RawValue, index);
 				}
 
 				index++;

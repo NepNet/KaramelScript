@@ -4,7 +4,7 @@ namespace KaramelScript.Parser
 {
 	public abstract class Expression
 	{
-		public abstract string Value { get; }
+		public abstract string RawValue { get; }
 		public Expression Parent { get; }
 		public IReadOnlyList<Expression> Children => _children;
 		private List<Expression> _children = new List<Expression>();

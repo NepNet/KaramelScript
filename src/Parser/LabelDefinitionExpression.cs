@@ -2,13 +2,13 @@ namespace KaramelScript.Parser
 {
 	public class LabelDefinitionExpression : Expression
 	{
-		public override string Value { get; }
+		public override string RawValue { get; }
 
 		public LabelDefinitionExpression(Expression parent, string name) : base(parent)
 		{
-			Value = name;
+			RawValue = name;
 		}
 
-		public override string ToString() => $"Label '{Value}'";
+		public override string ToString() => $"Label '{RawValue}'";
 	}
 }

@@ -1,11 +1,10 @@
 using System;
-using System.Collections.Generic;
 
 namespace KaramelScript.Parser
 {
 	public class AstBuilder
 	{
-		public Expression BuildAST(ModuleExpression module, Token[] tokens, string name)
+		public void BuildAST(ModuleExpression module, Token[] tokens, string name)
 		{
 			int current = 0;
 			int depth = -1;
@@ -21,19 +20,19 @@ namespace KaramelScript.Parser
 						depth = -1;
 						break;
 					case TokenType.NumericLiteral:
-						new LiteralExpression(parent, "int", token.Value);
+						new LiteralExpression(parent, "int", token.RawValue);
 						break;
 					case TokenType.StringLiteral:
-						new LiteralExpression(parent, "string", token.Value);
+						new LiteralExpression(parent, "string", token.RawValue);
 						break;
 					case TokenType.Label:
-						new LabelDefinitionExpression(parent, token.Value);
+						new LabelDefinitionExpression(parent, token.RawValue);
 						break;
 					case TokenType.Identifier:
 					{
 						if (depth == 0)
 						{
-							var call = new CallExpression(parent, token.Value);
+							var call = new CallExpression(parent, token.RawValue);
 							while (token.TokenType != TokenType.StatementEnd)
 							{
 								Walk(call);
@@ -42,7 +41,7 @@ namespace KaramelScript.Parser
 						}
 						else
 						{
-							new ReferenceExpression(parent, token.Value);
+							new ReferenceExpression(parent, token.RawValue);
 						}
 					}
 						break;
@@ -58,8 +57,6 @@ namespace KaramelScript.Parser
 			{
 				Walk(module);
 			}
-			
-			return module;
 		}
 	}
 }
