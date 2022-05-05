@@ -76,6 +76,11 @@ namespace KaramelScript.Lexer
 					}
 					int end = index;
 
+					if (start == end)
+					{
+						throw new ArgumentException($"Label name can't be null at line {line}");
+					}
+
 					string value = _code.Substring(start, end - start);
 					
 					tokens.Add(new Token(_file, line, start - lineStart, TokenType.Label, value));
