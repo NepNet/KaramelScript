@@ -63,6 +63,16 @@ namespace KaramelScript
 			
 			var statements = modules[0].Children;
 
+			//First we scan for labels
+			for (int i = 0; i < statements.Count; i++)
+			{
+				if (statements[i] is LabelDefinitionExpression label)
+				{
+					_labels.Add(label.RawValue, i);
+					Console.WriteLine($"{i}  {label.RawValue}");
+				}
+			}
+
 			var context = new RunnerContext(this);
 			
 			while (index < statements.Count)
@@ -72,11 +82,6 @@ namespace KaramelScript
 				{
 					Commands.RunCommand(call.RawValue, context);
 				}
-				else if (Current is LabelDefinitionExpression label)
-				{
-					_labels.Add(label.RawValue, index);
-				}
-
 				index++;
 			}
 		}

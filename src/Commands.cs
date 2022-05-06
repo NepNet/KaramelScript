@@ -16,7 +16,6 @@ namespace KaramelScript
 		{
 			"len",
 			"tof",
-			"put",
 			"cut",
 			"get",
 			
