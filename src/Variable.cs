@@ -21,5 +21,17 @@ namespace KaramelScript
 			Name = name;
 			Type = type;
 		}
+		
+		public static VariableType GetType(string rawName)
+		{
+			return rawName switch
+			{
+				"int" => VariableType.Integer,
+				"string" => VariableType.String,
+				"bool" => VariableType.Boolean,
+				"float" => VariableType.Float,
+				_ => VariableType.Custom
+			};
+		}
 	}
 }
