@@ -41,7 +41,9 @@ namespace KaramelScript.Parser
 							case "pow" :
 								VariableAssignmentStatement.Create(module, VariableAssignmentType.Power ,call);
 								break;
-							
+							default:
+								CallStatement.Create(module, call);
+								break;
 						}
 						break;
 					case LabelDefinitionExpression label:
