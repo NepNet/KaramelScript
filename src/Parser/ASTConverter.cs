@@ -17,9 +17,31 @@ namespace KaramelScript.Parser
 							case "new" :
 								VariableDeclarationStatement.Create(module, call);
 								break;
-							case "set" :
-								VariableAssignmentStatement.Create(module, call);
+							case "jmp" :
+								JumpStatement.Create(module, call);
 								break;
+							case "set" :
+								VariableAssignmentStatement.Create(module, VariableAssignmentType.Set ,call);
+								break;
+							case "add" :
+								VariableAssignmentStatement.Create(module, VariableAssignmentType.Add ,call);
+								break;
+							case "sub" :
+								VariableAssignmentStatement.Create(module, VariableAssignmentType.Subtract ,call);
+								break;
+							case "mul" :
+								VariableAssignmentStatement.Create(module, VariableAssignmentType.Multiply ,call);
+								break;
+							case "div" :
+								VariableAssignmentStatement.Create(module, VariableAssignmentType.Divide ,call);
+								break;
+							case "mod" :
+								VariableAssignmentStatement.Create(module, VariableAssignmentType.Modulo ,call);
+								break;
+							case "pow" :
+								VariableAssignmentStatement.Create(module, VariableAssignmentType.Power ,call);
+								break;
+							
 						}
 						break;
 					case LabelDefinitionExpression label:
