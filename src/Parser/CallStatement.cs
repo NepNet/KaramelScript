@@ -35,7 +35,8 @@ namespace KaramelScript.Parser
 						new CallArgument(statement, reference.RawValue, "reference");
 						break;
 					case LiteralExpression literal:
-						new CallArgument(statement, literal.RawValue, "value");
+						
+						new CallArgument(statement, literal.RawValue, literal.Type);
 						break;
 				}
 			}
